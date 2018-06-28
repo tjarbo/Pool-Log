@@ -12,8 +12,9 @@ var db_dataset;
 var currentairtemp = "";
 var counter = 0;
 
-
-
+var FIRAuth = firebase.auth();
+var entry_ref;
+var cityID_ref;
 
 /******************
  *     LOGIN      *
@@ -24,9 +25,9 @@ var counter = 0;
 function google_signIn() {
     //Setup the login provider
     var provider = new firebase.auth.GoogleAuthProvider();
-    firebase.auth().useDeviceLanguage();
+    FIRAuth.useDeviceLanguage();
 
-    firebase.auth().signInWithPopup(provider).then(function (result) {
+    FIRAuth.signInWithPopup(provider).then(function (result) {
         // Signing in was successful 
         console.log("User is signed in :)")
     }).catch(function (error) {
@@ -38,7 +39,7 @@ function google_signIn() {
 /** Sign Out the user */
 function signOut() {
     console.log("signOut: ...");
-    firebase.auth().signOut().then(function () {
+    FIRAuth.signOut().then(function () {
         // Signing out was successful 
         console.log("signOut(): User is logged out!");
     }).catch(function (error) {
@@ -185,7 +186,7 @@ function display_edit(key) {
 function db_setup_listeners() {
 
     // Setup listenes for the entry
-    firebase.database().ref('nutzer/' + uid + '/einträge').on('value', function (snapshot) {
+    entry_ref.on('value', function (snapshot) {
         // Reset the vars and the table
         counter = 0;
         display_clear_table();
@@ -206,7 +207,7 @@ function db_setup_listeners() {
     });
 
     // Get the city ID
-    firebase.database().ref('nutzer/' + uid + '/cityid').on('value', function (snapshot) {
+    cityID_ref.on('value', function (snapshot) {
         var cID = snapshot.val();
 
         if (cID) {
@@ -228,7 +229,7 @@ function db_setup_listeners() {
             $("#save_cityid_bttn").off();
             $("#save_cityid_bttn").on("click", function () {
                 $(this).addClass("disabled");
-                firebase.database().ref('nutzer/' + uid + '/cityid').set($("#cityid_inpt").val());
+                cityID_ref.set($("#cityid_inpt").val());
             })
         }
     });
@@ -253,8 +254,8 @@ function db_create_new() {
     }
 
     // Create a new entry with an generetic key form firebase
-    var entrykey = firebase.database().ref('nutzer/' + uid + '/einträge').push().key;
-    firebase.database().ref('nutzer/' + uid + '/einträge/' + entrykey).set(dataset);
+    var entrykey = entry_ref.push().key;
+    entry_ref.child(entrykey).set(dataset);
 
     // Hide the view
     $("#modal_create").modal("hide");
@@ -278,7 +279,7 @@ function db_update(key) {
         phvalue: phVal.val()
     }
 
-    firebase.database().ref('nutzer/' + uid + '/einträge/' + key).update(updateset);
+    entry_ref.child(key).update(updateset);
 
     // Hide the view
     $("#modal_edit").modal("hide");
@@ -294,7 +295,7 @@ function db_delete(key) {
     // 'Are you sure ?'
     if (confirm('Möchtest du den Eintrag vom ' + date + ' wirklich löschen?')) {
         // YES i am -> delete
-        firebase.database().ref('nutzer/' + uid + '/einträge').child(key).remove();
+        entry_ref.child(key).remove();
     } else {
         // oh NO! -> do nothing   
     }
@@ -331,7 +332,7 @@ function get_weather_for(cID) {
                 alert("Dein API-Key für openweathermap.org ist ungültig!");
             } else {
                 alert("Mit deiner Stadt ist was schief gelaufen, bitte gebe deine Plz erneut an!");
-                firebase.database().ref('nutzer/' + uid + '/cityid').remove();
+                cityID_ref.remove();
             }
         });
 }
@@ -347,13 +348,16 @@ function get_weather_for(cID) {
 /** Setup everything :) */
 function setup() {
     // Check login
-    firebase.auth().onAuthStateChanged(function (user) {
+    FIRAuth.onAuthStateChanged(function (user) {
         if (user) {
             // User is signed in.
             console.log("onAuthStateChanged: User is signed in");
             signedIn = true;
             username = user.displayName;
             uid = user.uid;
+
+            entry_ref = firebase.database().ref('nutzer/' + uid + '/einträge');
+            cityID_ref = 
 
             display_dashboard();
         } else {
