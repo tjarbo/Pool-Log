@@ -1,0 +1,23 @@
+{
+    "rules": {
+      "nutzer": {
+        "$uid": {
+          ".write": "$uid === auth.uid",
+          ".read": "$uid === auth.uid",
+          
+          "cityID": {
+            ".validate": "newData.isNumber()"
+          },
+          
+          "einträge": {
+            "$eID": {
+              "date": { ".validate" : "newData.isString()" },
+              "airtemp": {".validate": "newData.isNumber()"},
+              "watertemp": {".validate": "newData.isNumber()"},
+                "phvalue": {".validate": "newData.isNumber() && (newData.val() >=1 && newData.val() <= 14)"}          
+            } 
+          }  
+        }
+      }
+    }
+  }

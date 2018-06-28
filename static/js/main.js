@@ -246,9 +246,9 @@ function db_create_new() {
     // Create a dataset
     var dataset = {
         date: date.val(),
-        watertemp: wtemp.val(),
-        airtemp: atemp.val(),
-        phvalue: phVal.val()
+        watertemp: Number(wtemp.val().replace(",", ".")),
+        airtemp: Number(atemp.val().replace(",", ".")),
+        phvalue: Number(phVal.val().replace(",", "."))
     }
 
     // Create a new entry with an generetic key form firebase
