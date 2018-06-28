@@ -146,9 +146,10 @@ function display_create() {
         alert("Bitte melde dich erst an, um diese Funtion nutzen zu können");
         return;
     }
-
+    
     //Reset all inputs
-    $("#date_inpt").val("");               // Date
+    var d = new Date();
+    $("#date_inpt").val(d.getDate() + "." + (d.getMonth()+1) + "." + d.getFullYear());               // Date
     $("#phvalue_inpt").val("7");           // ph-Value
     $("#watertemp_inpt").val("");          // Watertemp
     $("#airtemp_inpt").val(currentairtemp); // Airtemp
@@ -357,7 +358,7 @@ function setup() {
             uid = user.uid;
 
             entry_ref = firebase.database().ref('nutzer/' + uid + '/einträge');
-            cityID_ref = 
+            cityID_ref = firebase.database().ref('nutzer/' + uid + '/cityID');
 
             display_dashboard();
         } else {
