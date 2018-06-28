@@ -20,6 +20,7 @@ var counter = 0;
  ******************/
 
 
+/** SignIn with Google */
 function google_signIn() {
     //Setup the login provider
     var provider = new firebase.auth.GoogleAuthProvider();
@@ -34,6 +35,7 @@ function google_signIn() {
     });
 }
 
+/** Sign Out the user */
 function signOut() {
     console.log("signOut: ...");
     firebase.auth().signOut().then(function () {
@@ -47,12 +49,12 @@ function signOut() {
 
 
 
-
 /******************
  *    DISPLAY     *
  ******************/
 
 
+/** Display the welcome screen and reset everything else, which is important*/
 function display_welcome_screen() {
 
     // Reset the right
@@ -74,6 +76,7 @@ function display_welcome_screen() {
     $("#new_entry_bttn").addClass("disabled");
 }
 
+/** Prepare the dashbord */
 function display_dashboard() {
 
     // Create an empty table
@@ -101,10 +104,15 @@ function display_dashboard() {
     $("#new_entry_bttn").removeClass("disabled");
 }
 
+/** Prepare and display an empty table */
 function display_clear_table() {
     $("#main").fadeOut().html($('#temp_table').html()).fadeIn();
 }
 
+/** Prepare a new table row and add this one to the table-body 
+ * @param {String} key Key for the entry in the database
+ * @param {Array} data entry-data
+*/ 
 function display_create_new_table_row(key, data) {
     // Update the counter
     counter++;
@@ -130,6 +138,7 @@ function display_create_new_table_row(key, data) {
     row.appendTo(table_body);
 }
 
+/** Prepare and display the 'create'-Modal */
 function display_create() {
     // Check users signIn status
     if (!signedIn) {
@@ -148,6 +157,9 @@ function display_create() {
 
 }
 
+/** Prepare and display the 'edit'-Modal 
+ * @param {String} key Key for the entry in the database
+*/
 function display_edit(key) {
     var dataset = db_dataset[key];
 
@@ -169,6 +181,7 @@ function display_edit(key) {
  ******************/
 
 
+/** Setup the listeners for the entries and the cityID */
 function db_setup_listeners() {
 
     // Setup listenes for the entry
@@ -222,6 +235,7 @@ function db_setup_listeners() {
 
 }
 
+/** Add a new entry to the database */
 function db_create_new() {
 
     // Create refences
@@ -246,6 +260,9 @@ function db_create_new() {
     $("#modal_create").modal("hide");
 }
 
+/** Update an entry in the database 
+ * @param {String} key Key for the entry in the database
+*/
 function db_update(key) {
     // Create refences
     var date = $("#date_inpt_edit");
@@ -267,6 +284,9 @@ function db_update(key) {
     $("#modal_edit").modal("hide");
 }
 
+/** Delete an entry in the database 
+ * @param {String} key Key for the entry in the database
+*/
 function db_delete(key) {
     // Get the entry-date
     var date = db_dataset[key].date;
@@ -288,6 +308,9 @@ function db_delete(key) {
  ******************/
 
 
+/** Create an API-Request to Openweathermaps.org for the current temperature 
+ * @param {String} cID ZIP-Code
+*/
 function get_weather_for(cID) {
 
     // Let's make a request to openweathermap.prg for the current weather
@@ -319,6 +342,9 @@ function get_weather_for(cID) {
 /******************
  *      MAIN      *
  ******************/
+
+
+/** Setup everything :) */
 function setup() {
     // Check login
     firebase.auth().onAuthStateChanged(function (user) {
