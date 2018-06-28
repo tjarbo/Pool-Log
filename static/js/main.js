@@ -291,10 +291,10 @@ function db_delete(key) {
 function get_weather_for(cID) {
 
     // Let's make a request to openweathermap.prg for the current weather
-    /*$.get("http://api.openweathermap.org/data/2.5/weather",
+    $.get("http://api.openweathermap.org/data/2.5/weather",
         {
             zip: cID + ",de",
-            APPID: "0bddd68b0f92de61a11669aafbc54ccc",
+            APPID: owm_apikey,
         }, function (data) {
 
             //Convert form kelvin to celsius
@@ -305,13 +305,12 @@ function get_weather_for(cID) {
             currentairtemp = temp;
         }).fail(function (x) {
             if (x.statCode = 401) {
-                alert("Dein API-Key ist ungültig");
+                alert("Dein API-Key für openweathermap.org ist ungültig!");
             } else {
                 alert("Mit deiner Stadt ist was schief gelaufen, bitte gebe deine Plz erneut an!");
                 firebase.database().ref('nutzer/' + uid + '/cityid').remove();
             }
-        });*/
-    currentairtemp = 76;
+        });
 }
 
 
