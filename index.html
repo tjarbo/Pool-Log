@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <title>Pool Log</title>
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">
+            <img src="./static/images/logo.png" width="30" height="30" class="d-inline-block align-top" alt=""> Pool Log</a>
+        <button id="new_entry_button" type="button" onclick="display_create();" class="btn btn-outline-success">Neuer Eintrag</button>
+    </nav>
+
+    <!-- BODY -->
+    <div class="container mt-3">
+        <div class="row">
+            <div id="linker_platzhalter" class="col-sm-1 col-md-2 "></div>
+            <div id="main" class="col d-flex justify-content-center">
+
+            </div>
+            <div id="rechter_platzhalter" class="col-3"></div>
+        </div>
+    </div>
+
+    <!-- TEMPLATES -->
+    <div id="temp_area">
+        <template id="temp_welcome">
+            <div class="card" style="width: 80%">
+                <div class="card-body">
+                    <h5 class="card-title">Willkommen beim Pool Log Portal!</h5>
+                    <p class="card-text">
+                        Diese Webanwendenung hilft dir dabei, die verschiedensten Messwerte deines Pools zu speichern und mit deinem Google Konto
+                        zu verknüpfen, sodass du sie immer wieder abrufen kannst 😉
+                    </p>
+
+                    <p class="card-text">
+                        Mometan werden folgende Daten unterstützt:
+                        <br> - Wassertemperatur
+                        <br> - Außentemperatur
+                        <br> - ph-Wert
+                        <br>
+                    </p>
+
+                    <div class="d-flex justify-content-center">
+                        <button id="google_login_bttn" class="btn shadow-sm p-2 mb-5 bg-white rounded text-secondary">
+                            <span class="text-secondary" style="text-transform:none">
+                                <img width="20px" alt="Google &quot;G&quot; Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png"> Mit Google anmelden
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-footer text-muted">
+                    <a href="https://www.iconfinder.com/icons/301724/beach_duck_pool_summer_vacation_icon">Logo</a>
+                    von
+                    <a href="https://www.iconfinder.com/icons/301724/beach_duck_pool_summer_vacation_icon">Mr. X</a>
+                    via
+                    <a href="https://www.iconfinder.com/">Iconfinder</a>
+                </div>
+            </div>
+        </template>
+
+        <template id="temp_account">
+            <div class="container">
+                <div class="card">
+                    <div class="card-body">
+                        <b>
+                            <span id="name_span">Max Mustermann</span>
+                        </b>
+                        <button id="signout_bttn" type="button" class="btn btn-danger btn-block">Abmelden</button>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template id="temp_table">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        Meine Einträge
+                    </div>
+
+                    <div class="">
+                        <table id="entries" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Datum</th>
+                                    <th scope="col">ph-Wert</th>
+                                    <th scope="col">Wassertemperatur</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <!-- MODALS -->
+    <div id=modal_area>
+        <div class="modal fade" id="modal_create" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Neuen Eintrag erstellen</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <form>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-5 col-form-label">Datum</label>
+                                    <div class="col-sm-7">
+                                        <input type="date" class="form-control" id="date_inpt" placeholder="Datum">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-5 col-form-label">ph-Wert</label>
+                                    <div class="col-sm-7">
+                                        <input type="number" min="1" max="14" value="7" class="form-control" id="phvalue_inpt" placeholder="ph-Wert">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-5 col-form-label">Wassertemperatur in °C</label>
+                                    <div class="col-sm-7">
+                                        <input type="number" value="25" class="form-control" id="watertemp_inpt" placeholder="Wassertemperatur">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-5 col-form-label">Lufttemperatur in °C</label>
+                                    <div class="col-sm-7">
+                                        <input type="number" value="25" class="form-control" id="airtemp_inpt" placeholder="Lufttemperatur">
+                                        <small id="emailHelp" class="form-text text-muted">Wetter von <b>Openweathermaps.com :)</b></small>
+                                    </div>
+                                </div>
+                            </form>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Abbrechen</button>
+                        <button type="button" onclick="db_create_new();" class="btn btn-success">Eintrag speichern</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="modal_cityid" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Stadt angeben</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Damit das die Lufttemperatur automatisch angeben werden kann, bitte trage hier die Postleitzahl deiner Stadt ein. Nur Städte
+                            in Deutschland werden unterstüzt!
+                            <form>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-5 col-form-label">Postleitzahl:</label>
+                                    <div class="col-sm-7">
+                                        <input type="number" min="1" max="3000000" value="1" class="form-control" id="cityid_inpt" placeholder="cityID">
+                                    </div>
+                                </div>
+                            </form>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <small class="text-muted">Wetter bereitgestellt von
+                            <b>openweathermap.org</b>
+                        </small>
+                        <button type="button" id="save_cityid_bttn" class="btn btn-primary">Speichern</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modal_edit" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Eintrag bearbeiten</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <form>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-5 col-form-label">Datum</label>
+                                    <div class="col-sm-7">
+                                        <input type="date" class="form-control" id="date_inpt_edit" placeholder="Datum">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-5 col-form-label">ph-Wert</label>
+                                    <div class="col-sm-7">
+                                        <input type="number" min="1" max="14" value="7" class="form-control" id="phvalue_inpt_edit" placeholder="ph-Wert">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-5 col-form-label">Wassertemperatur in °C</label>
+                                    <div class="col-sm-7">
+                                        <input type="number" value="25" class="form-control" id="watertemp_inpt_edit" placeholder="Wassertemperatur">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-5 col-form-label">Lufttemperatur in °C</label>
+                                    <div class="col-sm-7">
+                                        <input type="number" value="25" class="form-control" id="airtemp_inpt_edit" placeholder="Lufttemperatur">
+                                    </div>
+                                </div>
+                            </form>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Abbrechen</button>
+                        <button type="button" id="modal_edit_save_bttn" class="btn btn-primary">Änderungen speichern</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.1.0/firebase.js"></script>
+    <script src="./static/js/firebase.js"></script>
+    <script src="./static/js/main.js"></script>
+</body>
+
+</html>
