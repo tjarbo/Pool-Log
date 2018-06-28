@@ -80,9 +80,6 @@ function display_welcome_screen() {
 /** Prepare the dashbord */
 function display_dashboard() {
 
-    // Create an empty table
-    display_clear_table();
-
     // Change the right column
     $("#rechter_platzhalter").fadeOut(400, function () {
 
@@ -107,7 +104,7 @@ function display_dashboard() {
 
 /** Prepare and display an empty table */
 function display_clear_table() {
-    $("#main").fadeOut().html($('#temp_table').html()).fadeIn();
+    $("#main").html($('#temp_table').html());
 }
 
 /** Prepare a new table row and add this one to the table-body 
@@ -327,13 +324,16 @@ function get_weather_for(cID) {
             console.info("Aktuelle Temperatur: " + temp + " C");
             
             //Save the temp
-            currentairtemp = temp;
-        }).fail(function (x) {
-            if (x.statCode = 401) {
+            currentairtemp = Number(temp.toFixed(2));
+        }).fail(function (xhr, foo, bar) {
+            if (xhr.status == 401) {
                 alert("Dein API-Key für openweathermap.org ist ungültig!");
-            } else {
-                alert("Mit deiner Stadt ist was schief gelaufen, bitte gebe deine Plz erneut an!");
+            } else if (xhr.status == 404) {
+                alert("Deine Stadt wurde nicht gefunden, bitte gebe deine Plz erneut an!");
                 cityID_ref.remove();
+            } else {
+                alert("Bei Laden des Wetters ist ein Fehler passiert. Der Standartwert von 25 °C wurde eingesetzt");
+                currentairtemp = 25;
             }
         });
 }
