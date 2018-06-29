@@ -218,7 +218,7 @@ function db_setup_listeners() {
             // No cID founded
 
             // Reset the 'save' button, because maybe something has failed while loading the local weather so the cID has benn deleted
-            $(this).removeClass("disabled");
+            $("#save_cityid_bttn").removeClass("disabled");
 
             // Show the modal
             $("#modal_cityid").show();
@@ -313,7 +313,7 @@ function db_delete(key) {
 function get_weather_for(cID) {
 
     // Let's make a request to openweathermap.prg for the current weather
-    $.get("http://api.openweathermap.org/data/2.5/weather",
+    $.get("https://api.openweathermap.org/data/2.5/weather",
         {
             zip: cID + ",de",
             APPID: owm_apikey,

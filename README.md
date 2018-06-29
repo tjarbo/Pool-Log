@@ -42,8 +42,9 @@ In den nächsten Schritten bestätigst du ```database.rules.json``` und ```publi
 Mit den nächsten Schritten clonst du dieses Repository und kopierst alle notewendigen Dateien an die richtige Stelle:
 ```bash 
 rm -rf public && \
+rm -f database.rules.json && \
 git clone https://github.com/tjarbo/pool-log.git public && \
-yes | cp public/database.rules.json database.rules.json
+mv public/database.rules.json database.rules.json
 ```
 
 ### 2. Schritt: Firebase konfigurieren
