@@ -227,7 +227,7 @@ function db_setup_listeners() {
             $("#save_cityid_bttn").off();
             $("#save_cityid_bttn").on("click", function () {
                 $(this).addClass("disabled");
-                cityID_ref.set($("#cityid_inpt").val());
+                cityID_ref.set(Number($("#cityid_inpt").val().toFixed()));
             })
         }
     });
