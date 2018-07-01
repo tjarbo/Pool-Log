@@ -39,7 +39,7 @@ Wähle nun **Database** und **Hosting** mit der *Space*-Taste aus und bestätige
 
 In den nächsten Schritten bestätigst du ```database.rules.json``` und ```public```mit *Enter* und auf die Frage *Configure as a single-page app?* anwortest du mit **YES** oder **y**!
 
-Mit den nächsten Schritten clonst du dieses Repository und kopierst alle notewendigen Dateien an die richtige Stelle:
+Folgende Befehle helfen dir nun das Repository einzurichten und alle notwendigen Dateien an die richtige Stelle zu kopieren:
 ```bash 
 rm -rf public && \
 rm -f database.rules.json && \
