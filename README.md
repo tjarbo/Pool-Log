@@ -96,10 +96,6 @@ Nun ist deine WebApp unter der angebenen URL erreichbar ✅
 
 Du möchtest eigene Ideen mit in das Projekt einbringen? Dann lese bitte einmal die [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) durch, denn dort erfährst du alles Notwendige über den Ablauf einer Pull Request!
 
-### Versionen
-
-Um eine einheitliche Versionsstruktur zu erhalten, verwende ich [SemVer](http://semver.org/)verwendet. Um die verfügbaren Versionen einzusehen, besuche [Tags des Repositorys](https://github.com/tjarbo/Pool-Log/tags).
-
 ### Verwendete Software
 
 * [Bootstrap 4](https://getbootstrap.com)
@@ -109,6 +105,6 @@ Um eine einheitliche Versionsstruktur zu erhalten, verwende ich [SemVer](http://
 
 ## Autoren / Authors
 
-* **Tjark [tjarbo](http://www.github/tjarbo)**
+* **Tjark -  \<[tjarbo](http://www.github/tjarbo)\>**
 
 Werfe ebenfalls einen Blick auf die Liste der Mitwirkenden ([contributors](https://github.com/tjarbo/Pool-Log/CONTRIBUTORS.md)), welche ebenfalls mitgeholfen haben!
